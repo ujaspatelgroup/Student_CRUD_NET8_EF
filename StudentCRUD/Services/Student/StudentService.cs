@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StudentCRUD.DTOs.Student;
 using StudentCRUD.Models;
 
 namespace StudentCRUD.Services.Student
@@ -8,64 +10,84 @@ namespace StudentCRUD.Services.Student
     {
 
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public StudentService(ApplicationDbContext context)
+        public StudentService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<List<Students>> GetAllStudentsAsync()
+        public async Task<ServiceResponse<List<GetStudentDto>>> GetAllStudentsAsync()
         {
-            return await _context.Students.ToListAsync();
+            var serviceresponse = new ServiceResponse<List<GetStudentDto>>();
+            var students = await _context.Students.ToListAsync();
+            serviceresponse.data = _mapper.Map<List<GetStudentDto>>(students);
+            return serviceresponse;
         }
 
-        public async Task<Students> GetStudentAsync(int id)
+        public async Task<ServiceResponse<GetStudentDto>> GetStudentAsync(int id)
         {
-            var student = await FindStudent(id);
-            if (student is not null)
+            var serviceresponse = new ServiceResponse<GetStudentDto>();
+            var findstudent = await FindStudent(id);
+            if (findstudent is not null)
             {
-                return student;
+                serviceresponse.data = _mapper.Map<GetStudentDto>(findstudent);
+                return serviceresponse;
             }
             else
             {
-                throw new Exception("Student not found");
+                serviceresponse.Success = false;
+                serviceresponse.Message = "Student not found";
+                return serviceresponse;
             }
         }
 
-        public async Task<List<Students>> AddStudentAsync(Students student)
+        public async Task<ServiceResponse<List<GetStudentDto>>> AddStudentAsync(AddStudentDto student)
         {
-            _context.Students.Add(student);
+            var serviceresponse = new ServiceResponse<List<GetStudentDto>>();
+            _context.Students.Add(_mapper.Map<Students>(student));
             await _context.SaveChangesAsync();
-            return await _context.Students.ToListAsync();
+            serviceresponse.data = _mapper.Map<List<GetStudentDto>>(await _context.Students.ToListAsync());
+            return serviceresponse;
         }
 
-        public async Task<Students> UpdateStudentAsync(Students student)
+        public async Task<ServiceResponse<GetStudentDto>> UpdateStudentAsync(UpdateStudentDto student)
         {
-
-            if (FindStudent(student.Id) is not null)
+            var serviceresponse = new ServiceResponse<GetStudentDto>();
+            var findstudent = await FindStudent(student.Id);
+            if (findstudent is not null)
             {
-                _context.Students.Update(student);
+                findstudent.Name = student.Name;
+                findstudent.Address = student.Address;
                 await _context.SaveChangesAsync();
-                return student;
+                serviceresponse.data = _mapper.Map<GetStudentDto>(findstudent);
+                return serviceresponse;
             }
             else
             {
-                throw new Exception("Student not found");
+                serviceresponse.Success = false;
+                serviceresponse.Message = "Student not found";
+                return serviceresponse;
             }
         }
 
-        public async Task<Students> DeleteStudentAsync(int id)
+        public async Task<ServiceResponse<GetStudentDto>> DeleteStudentAsync(int id)
         {
-            var student = await FindStudent(id);
-            if (student is not null)
+            var serviceresponse = new ServiceResponse<GetStudentDto>();
+            var findstudent = await FindStudent(id);
+            if (findstudent is not null)
             {
-                _context.Students.Remove(student);
+                _context.Students.Remove(_mapper.Map<Students>(findstudent));
                 await _context.SaveChangesAsync();
-                return student;
+                serviceresponse.data = _mapper.Map<GetStudentDto>(findstudent);
+                return serviceresponse;
             }
             else
             {
-                throw new Exception("Student not found");
+                serviceresponse.Success = false;
+                serviceresponse.Message = "Student not found";
+                return serviceresponse;
             }
         }
 
