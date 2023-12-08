@@ -1,17 +1,18 @@
-﻿using StudentCRUD.Models;
+﻿using StudentCRUD.DTOs.Student;
+using StudentCRUD.Models;
 
 namespace StudentCRUD.Services.Student
 {
     public interface IStudentService
     {
-        public Task<List<Students>> GetAllStudentsAsync();
+        public Task<ServiceResponse<List<GetStudentDto>>> GetAllStudentsAsync();
 
-        public Task<Students> GetStudentAsync(int id);
+        public Task<ServiceResponse<GetStudentDto>> GetStudentAsync(int id);
 
-        public Task<List<Students>> AddStudentAsync(Students student);
+        public Task<ServiceResponse<List<GetStudentDto>>> AddStudentAsync(AddStudentDto student);
 
-        public Task<Students> UpdateStudentAsync(Students student);
+        public Task<ServiceResponse<GetStudentDto>> UpdateStudentAsync(UpdateStudentDto student);
 
-        public Task<Students> DeleteStudentAsync(int id);
+        public Task<ServiceResponse<GetStudentDto>> DeleteStudentAsync(int id);
     }
 }
