@@ -20,12 +20,11 @@ steps:
     command: 'publish'
     publishWebProjects: true
 - task: AzureRmWebAppDeployment@4
+- task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Azure Pay as go(ac04997d-45aa-4a94-b9ad-ccbb7e22b63f)'
     appType: 'webAppLinux'
     WebAppName: 'StudentOperations'
-    deployToSlotOrASE: true
-    ResourceGroupName: 'Student'
-    SlotName: 'production'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    RuntimeStack: '.net'
