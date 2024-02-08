@@ -1,5 +1,5 @@
-﻿using StudentCRUD.DTOs.Student;
-using StudentCRUD.Models;
+﻿using StudentCRUD.DTOs.Shared;
+using StudentCRUD.DTOs.Student;
 
 namespace StudentCRUD.Services.Student
 {

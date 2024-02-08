@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StudentCRUD.DTOs.Shared;
 using StudentCRUD.DTOs.Student;
 using StudentCRUD.Models;
 

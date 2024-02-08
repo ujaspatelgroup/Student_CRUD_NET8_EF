@@ -1,4 +1,4 @@
-﻿namespace StudentCRUD.Models
+﻿namespace StudentCRUD.DTOs.Shared
 {
     public class ServiceResponse<T>
     {
