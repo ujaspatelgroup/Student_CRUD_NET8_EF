@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudentCRUD.DTOs.Shared;
 using StudentCRUD.DTOs.Student;
-using StudentCRUD.Models;
 using StudentCRUD.Services.Student;
 
 namespace StudentCRUD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StudentsController : ControllerBase
     {
         private readonly IStudentService _studentService;
