@@ -94,7 +94,7 @@ namespace StudentCRUD.Services.Student
 
         private async Task<Students> FindStudent(int id)
         {
-            var student = await _context.Students.FindAsync(id);
+            var student = await _context.Students.FirstOrDefaultAsync(x=>x.Id == id);
             return student;
         }
     }
