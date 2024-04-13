@@ -59,7 +59,7 @@ namespace StudentCRUD.Services.Student
             var findstudent = await FindStudent(student.Id);
             if (findstudent is not null)
             {
-                findstudent.Name = student.Name;
+                //findstudent.Name = student.Name;
                 findstudent.Address = student.Address;
                 await _context.SaveChangesAsync();
                 serviceresponse.data = _mapper.Map<GetStudentDto>(findstudent);
