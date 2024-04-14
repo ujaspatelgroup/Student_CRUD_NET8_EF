@@ -42,7 +42,7 @@ namespace StudentCRUD.Controllers
             return await _studentService.UpdateStudentAsync(student);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ServiceResponse<GetStudentDto>> DeleteStudent(int id)
         {
             return await _studentService.DeleteStudentAsync(id);
