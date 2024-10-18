@@ -29,10 +29,12 @@ namespace StudentCRUD.Services.UserAccount
             var serviceresponse = new ServiceResponse<GetUserRegisterDto>();
             var newUser = new ApplicationUser()
             {
-                Name = registerDTO.Name,
+                FirstName = registerDTO.FirstName,
+                LastName = registerDTO.LastName,
                 Email = registerDTO.Email,
                 PasswordHash = registerDTO.Password,
-                UserName = registerDTO.Email
+                UserName = registerDTO.Email,
+                PhoneNumber = registerDTO.PhoneNumber
             };
 
             var user = await _userManager.FindByEmailAsync(newUser.Email);
@@ -93,7 +95,7 @@ namespace StudentCRUD.Services.UserAccount
             }
 
             var getUserRole = await _userManager.GetRolesAsync(getUser);
-            var userSession = new UserSession(getUser.Id, getUser.Name, getUser.Email, getUserRole.First());
+            var userSession = new UserSession(getUser.Id, getUser.FirstName, getUser.LastName, getUser.Email, getUserRole.First());
 
             string token = GenerateToken(userSession);
             GetUserLoginDto getUserLogin = new GetUserLoginDto { Token = token };
@@ -108,10 +110,11 @@ namespace StudentCRUD.Services.UserAccount
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var userClaims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id!),
-                new Claim(ClaimTypes.Name, user.Name!),
-                new Claim(ClaimTypes.Email, user.Email!),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim("id", user.Id!),
+                new Claim("firstname", user.FirstName!),
+                new Claim("lastname", user.LastName!),
+                new Claim("email", user.Email!),
+                new Claim("roles", user.Role)
             };
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
